@@ -7,18 +7,18 @@ function init() {
     d3.json(url).then(function(data){
         // setting up dropdown menu
         let dropdownMenu = d3.select("#selDataset");
-        data.names.forEach((sampleNum) => { //check on forEach function example or cite it
+        // https://stackoverflow.com/questions/43121679/how-to-append-option-into-select-combo-box-in-d3
+        data.names.forEach((sampleNum) => {
             dropdownMenu.append("option").text(sampleNum).property("value", sampleNum);
         });
         
         // saving sample names
         let sampleNames = data.names;
-        // let metaData = data.metadata;
 
         // initializing the charts with the first sample
         barChart(sampleNames[0]);
         bubbleChart(sampleNames[0]);
-        // metadataChart(sampleNames[0]);
+        metadataChart(sampleNames[0]);
     });
 
 };
@@ -91,11 +91,31 @@ function bubbleChart(sampleNum){
     });
 };
 
+function metadataChart(sampleNum){
+    d3.json(url).then(function(data){
+        // getting the meta data
+        let metadataArray = data.metadata;
+        // filter it for when the sample id matched the specific sample id
+        let metadataNumArray = metadataArray.filter(sample => sample.id == sampleNum);
+        console.log(metadataNumArray);
+        let metadata = metadataNumArray[0];
+        d3.select("#sample-metadata").html("");
+
+        // goes through all of the meta data for the same and adds each key and value
+        // https://stackoverflow.com/questions/54851645/how-to-display-both-key-and-value-in-object-using-javascript
+        Object.entries(metadata).forEach(([key,value]) => {
+            d3.select("#sample-metadata").append("h5").text(`${key}: ${value}`);
+        });
+    });
+};
+
 function optionChanged(value) { 
+    // look here for help myself, but dont forget to delete this two comments
+    // https://git.bootcampcontent.com/University-of-California---San-Diego/UCSD-VIRT-DATA-PT-08-2023-U-LOLC/-/tree/main/14-Interactive-Visualizations/3?ref_type=heads
 
     console.log(value); 
 
     barChart(value);
     bubbleChart(value);
-    // metadataChart(value);
+    metadataChart(value);
 };
