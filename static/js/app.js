@@ -110,9 +110,6 @@ function metadataChart(sampleNum){
 };
 
 function optionChanged(value) { 
-    // look here for help myself, but dont forget to delete this two comments
-    // https://git.bootcampcontent.com/University-of-California---San-Diego/UCSD-VIRT-DATA-PT-08-2023-U-LOLC/-/tree/main/14-Interactive-Visualizations/3?ref_type=heads
-
     console.log(value); 
 
     barChart(value);
